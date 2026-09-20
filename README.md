@@ -76,13 +76,14 @@ The agent will:
 
 This part is up to you. In Obsidian, choose **Open folder as vault** and select `<project>/vault`.
 
-Recommended settings (Settings → Files and links), so links you add by hand match the vault's conventions:
+Recommended settings (Settings → Files and links), so links and attachments you add by hand match the vault's conventions:
 
 - **Use [[Wikilinks]]**: off
 - **New link format**: Relative path to file
 - **Automatically update internal links**: on
+- **Default location for new attachments**: *Same folder as current file*
 
-Optional: set **Default location for new attachments** to *Same folder as current file*. Images you paste into an inbox note then stay next to it and get archived with it.
+Images you paste into an inbox note then stay next to it and get archived with it. Images that belong to a wiki page go in `wiki/asset/`, which the agent maintains for you.
 
 The vault uses standard relative markdown links, so it also reads fine on GitHub and in your editor.
 
@@ -143,7 +144,7 @@ When a new version of `ai-project-vault.md` is released, run it again in the pro
 ## FAQ
 
 **Should the vault be committed?**
-Yes. The vault is part of the project, so specs and code are versioned together and the whole team shares one memory. Only Obsidian's per-user workspace files are ignored.
+Yes. The vault is part of the project, so specs and code are versioned together and the whole team shares one memory. Only Obsidian's per-user settings files are ignored.
 
 **Which agents does it work with?**
 It works with any agent that reads `AGENTS.md`, such as Codex. Claude Code reads it through the `@AGENTS.md` import in `CLAUDE.md`. For a tool that uses a different instruction file, point that file at `AGENTS.md`.

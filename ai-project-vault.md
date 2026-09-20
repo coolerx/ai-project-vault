@@ -1,7 +1,7 @@
 ---
 name: ai-project-vault
 description: Build file that installs an Obsidian-compatible vault inside a coding project. The vault's wiki becomes the project's knowledge base, its living spec, and the persistent memory of AI coding agents (Claude Code, Codex, and any agent that reads AGENTS.md). Run it interactively inside the project. Do not skip phases.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # AI Project Vault
@@ -100,7 +100,7 @@ vault/
         └── <feature-name>/{index.md, spec.md, implementation.md}   (one per feature)
 AGENTS.md    (create, or append the ai-project-vault block)
 CLAUDE.md    (create, or add the @AGENTS.md import)
-.gitignore   (add two Obsidian entries)
+.gitignore   (add three Obsidian entries)
 ```
 
 Mention that everything is plain markdown inside the repository, nothing is installed, and Phase 6 will separately ask before touching the agent's native memory. Adjust and re-show if the user asks for changes.
@@ -109,7 +109,7 @@ Mention that everything is plain markdown inside the repository, nothing is inst
 
 Create everything from the approved preview.
 
-1. **Folders and placeholders.** Create `vault/raw/inbox/.gitkeep` and `vault/raw/archive/.gitkeep`. Do not pre-create `wiki/log/`, `wiki/assets/`, or `raw/archive/YYYY-MM/` folders; they appear when first needed.
+1. **Folders and placeholders.** Create `vault/raw/inbox/.gitkeep` and `vault/raw/archive/.gitkeep`. Do not pre-create `wiki/log/`, `wiki/asset/`, or `raw/archive/YYYY-MM/` folders; they appear when first needed.
 2. **`vault/schema.md`.** Write the content of **Appendix B** exactly, filling in only the `{{…}}` placeholders in "Project settings" (project name, one-line description, wiki language, install date). `<…>` placeholders inside the templates stay as they are; they are templates.
 3. **Wiki pages.** Create them from the templates in schema section 13, written in the wiki language (translate headings; keep frontmatter English):
    - `wiki/index.md` listing overview, log, schema, every area index, and every feature.
@@ -125,6 +125,7 @@ Create everything from the approved preview.
    ```
    # Obsidian (ai-project-vault)
    vault/.obsidian/workspace*.json
+   vault/.obsidian/appearance.json
    vault/.trash/
    ```
 7. **Log.** Append the first entry to `wiki/log.md`:
@@ -180,10 +181,13 @@ Check the result before telling the user it is done. Fix anything that fails.
 Explain in plain language, in the user's language:
 
 1. **Open the vault yourself.** In Obsidian, choose "Open folder as vault" and select `<project-root>/vault`. Obsidian is optional for agents but is how you browse the wiki, follow links, and see the graph.
-2. **Three recommended Obsidian settings** (Settings → Files and links), so links you add by hand match the vault's convention:
+2. **Four recommended Obsidian settings** (Settings → Files and links), so links and attachments you add by hand match the vault's convention:
    - "Use [[Wikilinks]]" → off
    - "New link format" → Relative path to file
    - "Automatically update internal links" → on
+   - "Default location for new attachments" → Same folder as current file
+
+   Images they paste into a raw note then stay next to it and are archived with it. Images that belong to a wiki page go in `wiki/asset/`, which agents maintain.
 3. **How the vault works day to day:**
    - Drop an idea note into `vault/raw/inbox/` and say: *"Turn raw/inbox/<file> into a spec."* The agent discusses open questions with you, writes `wiki/feature/<feature-name>/spec.md`, and archives the raw note. If it should stay a research result, say *"Organize this as research."*
    - Drop a rough change request into `vault/raw/inbox/` and say: *"Implement raw/inbox/<file>."* The agent shows a plan, implements and tests after you confirm, then updates the spec and implementation pages to match the code.
@@ -265,7 +269,7 @@ Write everything inside the four-backtick fence below to `vault/schema.md`.
 ---
 type: reference
 status: active
-schema-version: 1.0.0
+schema-version: 1.1.0
 updated: {{install-date}}
 ---
 
@@ -277,7 +281,7 @@ The operating manual for this vault. Every agent reads it before running a vault
 
 - **Project:** {{project-name}} — {{one-line-description}}
 - **Wiki language:** {{wiki-language}}. Page body and headings are written in this language. Folder names, file names, frontmatter keys and values, log prefixes, and log labels stay English.
-- **Installed:** {{install-date}} with ai-project-vault 1.0.0
+- **Installed:** {{install-date}} with ai-project-vault 1.1.0
 - **Project-specific rules:** none yet. Add rules here as they are agreed with the user.
 
 ## 1. What this vault is
@@ -301,7 +305,7 @@ vault/
     ├── log.md                recent activity (append-only)
     ├── log/YYYY-MM.md        rotated older activity
     ├── overview.md           what the project is, scope, stack, layout, glossary
-    ├── assets/               images used by wiki pages
+    ├── asset/                images used by wiki pages
     ├── code/                 coding style, dev setup, build, testing, CI/deploy, architecture
     ├── design/               planning material, idea reviews, cross-feature research
     ├── ui/                   design system, shared UI guidelines, screen map
@@ -338,7 +342,7 @@ vault/
 - Body links are **relative markdown links** from the current file: `[Checkout spec](../checkout/spec.md)`. Never `[[wikilinks]]`, never absolute paths.
 - Link to the vault manual from a wiki page with a relative path, e.g. `[schema](../schema.md)` from `wiki/index.md`.
 - Code references are repo-root paths in backticks: `src/checkout/coupon.ts`. Prefer file and symbol names over line numbers, which go stale.
-- Images used by wiki pages live in `wiki/assets/` and are linked relatively.
+- Images used by wiki pages live in `wiki/asset/` and are linked relatively. This does not depend on the user's Obsidian attachment setting: whenever you add an image to a wiki page, write the file into `wiki/asset/` yourself (creating the folder if it does not exist) and link it from the page. Attachments belonging to a raw file are not wiki images — they stay beside the raw file and are archived with it (section 10).
 - **Frontmatter paths are not links.** `sources` paths are relative to `vault/`. `code` paths are relative to the repository root. They stay valid when a page moves.
 - External sources: full URLs, in the page's sources section.
 
@@ -385,7 +389,7 @@ updated: 2026-09-15        # date of last material change
 ## 6. Indexes
 
 - `wiki/index.md` (root) lists: overview, log, this schema, every area index (`code`, `design`, `ui`, `decision`, `feature`), and **every feature** with its status and one line.
-- Every folder under `wiki/` has an `index.md` listing each page in it with one line. Exception: `wiki/log/` (the log header lists its files) and `wiki/assets/`.
+- Every folder under `wiki/` has an `index.md` listing each page in it with one line. Exception: `wiki/log/` (the log header lists its files) and `wiki/asset/`.
 - A feature's `index.md` lists its pages, related features, and main code paths.
 - **Index contract:** when you create, move, rename, delete, or materially change a page, update its folder index, the parent index if the entry's line changed, and the root index for feature-level changes, all in the same pass.
 
@@ -555,7 +559,7 @@ Check and report, grouped by severity. Fix only after the user confirms.
 - Log violations: `log.md` over 200 lines without rotation; entries with more than 3 body lines
 - `draft` pages untouched for a long time; `approved` specs never implemented
 - Items waiting in `raw/inbox/`
-- Wiki images outside `wiki/assets/`
+- Wiki images outside `wiki/asset/`
 - Concepts mentioned often without a page of their own; questions worth investigating
 
 Log a `lint` entry with a one-line summary of findings.
