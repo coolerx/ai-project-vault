@@ -83,7 +83,7 @@ Recommended settings (Settings → Files and links), so links and attachments yo
 - **Automatically update internal links**: on
 - **Default location for new attachments**: *Same folder as current file*
 
-Images you paste into an inbox note then stay next to it and get archived with it. Images that belong to a wiki page go in `wiki/asset/`, which the agent maintains for you.
+Images you paste into an inbox note then stay next to it and get archived with it. Images that belong to a wiki page go in `wiki/asset/`, which the agent maintains for you. If a wiki page adopts an image from your note, the agent keeps a single copy in `wiki/asset/` and repoints the archived note to it. Before placing an image over 1 MB, it asks whether to downsize it.
 
 The vault uses standard relative markdown links, so it also reads fine on GitHub and in your editor.
 
@@ -131,7 +131,7 @@ The agent reads the note plus the feature's spec, implementation notes, and deci
 - **Links:** relative markdown links, never `[[wikilinks]]`. Code is referenced by repo-root path.
 - **Frontmatter:** `type`, `status`, `updated`, plus `feature`, `sources`, and `code` where relevant.
 - **Spec status:** `draft` → `approved` → `implemented` → `deprecated`.
-- **Raw files** are never edited. They move from `raw/inbox/` to `raw/archive/YYYY-MM/` and are renamed with a date prefix, keeping their original extension (`coupons.md` → `raw/archive/2026-09/2026-09-15-checkout-coupons.md`).
+- **Raw files** are never edited. They move from `raw/inbox/` to `raw/archive/YYYY-MM/` and are renamed with a date prefix, keeping their original extension (`coupons.md` → `raw/archive/2026-09/2026-09-15-checkout-coupons.md`). The one exception: when a wiki page adopts an image from a note, the image lives only in `wiki/asset/` and the archived note's link is repointed to it.
 - **Log:** each entry is a title line plus at most 3 body lines. When `log.md` passes 200 lines, previous months rotate into `wiki/log/YYYY-MM.md`.
 - **Truth:** code is the truth for current behavior, and the spec is the truth for intent. When they disagree, the agent asks you instead of silently changing either one.
 
