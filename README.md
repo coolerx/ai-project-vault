@@ -122,6 +122,7 @@ The agent reads the note plus the feature's spec, implementation notes, and deci
 ### Everything else
 
 - **Ask about the project.** *"How are coupons validated?"* The agent answers from the wiki with links, and can file a useful answer as a new page.
+- **Tidy the inbox.** *"Clean up raw/inbox/coupons.md and turn the options into a table."* The agent edits, merges, or renames inbox files on your behalf, exactly as if you had done it yourself, so nothing is logged. Handy when a team shares one inbox.
 - **Lint.** *"Lint the wiki."* The agent checks for drift between wiki and code, broken links, missing index entries, naming problems, stale drafts, and waiting inbox items.
 - **Memory while coding.** When the agent learns something a future session needs (a build gotcha, an agreed convention, a clarified behavior), it writes it into the right page right away.
 
@@ -131,7 +132,7 @@ The agent reads the note plus the feature's spec, implementation notes, and deci
 - **Links:** relative markdown links, never `[[wikilinks]]`. Code is referenced by repo-root path.
 - **Frontmatter:** `type`, `status`, `updated`, plus `feature`, `sources`, and `code` where relevant.
 - **Spec status:** `draft` → `approved` → `implemented` → `deprecated`.
-- **Raw files** are never edited. They move from `raw/inbox/` to `raw/archive/YYYY-MM/` and are renamed with a date prefix, keeping their original extension (`coupons.md` → `raw/archive/2026-09/2026-09-15-checkout-coupons.md`). The one exception: when a wiki page adopts an image from a note, the image lives only in `wiki/asset/` and the archived note's link is repointed to it.
+- **Inbox files** are yours: the agent creates, edits, merges, renames, or deletes them only when you ask, and logs nothing. **Archived files** are never edited. They move from `raw/inbox/` to `raw/archive/YYYY-MM/` and are renamed with a date prefix, keeping their original extension (`coupons.md` → `raw/archive/2026-09/2026-09-15-checkout-coupons.md`). The one exception: when a wiki page adopts an image from a note, the image lives only in `wiki/asset/` and the archived note's link is repointed to it.
 - **Log:** each entry is a title line plus at most 3 body lines. When `log.md` passes 200 lines, previous months rotate into `wiki/log/YYYY-MM.md`.
 - **Truth:** code is the truth for current behavior, and the spec is the truth for intent. When they disagree, the agent asks you instead of silently changing either one.
 
